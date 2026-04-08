@@ -1,8 +1,4 @@
 """
-EDA Completa — Apartment Rental Offers in Germany
-Dataset: ImmoScout24 via Kaggle (corrieaar/apartment-rental-offers-in-germany)
-Tarefa de ML: Regressão para prever baseRent
-
 Estrutura:
   Bloco 0  — Download + Carregamento
   Bloco 1  — Análise Descritiva Geral
