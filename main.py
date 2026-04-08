@@ -1326,5 +1326,4 @@ print(f"""
     • 68% de dados ausentes em heatingCosts; 71% em energyEfficiencyClass
     • ANOVA confirma impacto significativo de regio1 e interiorQual no preço
     
-  Próximo passo: Limpeza e Engenharia de Features (encoding, normalização, feature engineering)
 """)
