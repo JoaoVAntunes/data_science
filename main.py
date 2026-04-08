@@ -1294,36 +1294,3 @@ viz5_path = os.path.join(OUTPUT_DIR, 'violinplot_basrent_qualidade.png')
 plt.savefig(viz5_path, dpi=200, bbox_inches='tight')
 plt.close()
 print(f"  ✓ Salvo: {viz5_path}")
-
-
-# ============================================================================
-# RESUMO FINAL
-# ============================================================================
-section("RESUMO FINAL — EDA COMPLETA")
-
-print(f"""
-  Dataset: Apartment Rental Offers in Germany (ImmoScout24 via Kaggle)
-  
-  Instâncias (bruto):         {df.shape[0]:>10,}
-  Instâncias (após filtro):   {df_clean.shape[0]:>10,}
-  Features totais:            {df.shape[1]:>10}
-  
-  Análise Descritiva:         ✓ concluída (shape, dtypes, missing, stats, class ratio)
-  Análises Univariadas:       ✓ 20 análises (U1–U20) no formato Q/H/A/D
-  Análises Multivariadas:     ✓ 10 análises (M1–M10) com testes estatísticos
-  Visualizações:              ✓ 5 figuras salvas em '{OUTPUT_DIR}'
-    VIZ1: heatmap_correlacoes.png
-    VIZ2: boxplot_basrent_por_regiao.png
-    VIZ3: scatter_area_aluguel.png
-    VIZ4: boxplot_basrent_eficiencia.png
-    VIZ5: violinplot_basrent_qualidade.png
-
-  Principais Achados:
-    • baseRent: média €{df_clean['baseRent'].mean():.0f}, mediana €{df_clean['baseRent'].median():.0f} (assimetria positiva)
-    • livingSpace: mediana {df_clean['livingSpace'].median():.0f} m², correlação r≈{analise_m3()['pearson_r']:.2f} com baseRent
-    • Nordrhein-Westfalen e Sachsen concentram >45% das ofertas
-    • 34% dos imóveis incluem cozinha montada (hasKitchen=True)
-    • 68% de dados ausentes em heatingCosts; 71% em energyEfficiencyClass
-    • ANOVA confirma impacto significativo de regio1 e interiorQual no preço
-    
-""")
