@@ -1,0 +1,288 @@
+================================================================================
+EXPLORAÇÃO BÁSICA - DATASET APARTMENT RENTAL OFFERS IN GERMANY
+================================================================================
+
+1. ESTRUTURA DO DATASET
+Shape do dataset: (268850, 49)
+   Linhas: 268850
+   Colunas: 49
+
+Tipos de dados (dtypes):
+regio1                       object
+serviceCharge               float64
+heatingType                  object
+telekomTvOffer               object
+telekomHybridUploadSpeed    float64
+newlyConst                     bool
+balcony                        bool
+picturecount                  int64
+pricetrend                  float64
+telekomUploadSpeed          float64
+totalRent                   float64
+yearConstructed             float64
+scoutId                       int64
+noParkSpaces                float64
+firingTypes                  object
+hasKitchen                     bool
+geo_bln                      object
+cellar                         bool
+yearConstructedRange        float64
+baseRent                    float64
+houseNumber                  object
+livingSpace                 float64
+geo_krs                      object
+condition                    object
+interiorQual                 object
+petsAllowed                  object
+street                       object
+streetPlain                  object
+lift                           bool
+baseRentRange                 int64
+typeOfFlat                   object
+geo_plz                       int64
+noRooms                     float64
+thermalChar                 float64
+floor                       float64
+numberOfFloors              float64
+noRoomsRange                  int64
+garden                         bool
+livingSpaceRange              int64
+regio2                       object
+regio3                       object
+description                  object
+facilities                   object
+heatingCosts                float64
+energyEfficiencyClass        object
+lastRefurbish               float64
+electricityBasePrice        float64
+electricityKwhPrice         float64
+date                         object
+dtype: object
+
+================================================================================
+2. PRIMEIRAS E ÚLTIMAS LINHAS
+================================================================================
+
+Primeiras 5 linhas:
+                regio1  serviceCharge  ... electricityKwhPrice   date
+0  Nordrhein_Westfalen         245.00  ...                 NaN  May19
+1      Rheinland_Pfalz         134.00  ...                 NaN  May19
+2              Sachsen         255.00  ...                 NaN  Oct19
+3              Sachsen          58.15  ...                 NaN  May19
+4               Bremen         138.00  ...                 NaN  Feb20
+
+[5 rows x 49 columns]
+
+Últimas 5 linhas:
+                     regio1  serviceCharge  ... electricityKwhPrice   date
+268845               Bayern           90.0  ...                 NaN  Feb20
+268846               Hessen          220.0  ...                 NaN  May19
+268847               Hessen          220.0  ...                 NaN  Feb20
+268848  Nordrhein_Westfalen          175.0  ...                 NaN  May19
+268849               Hessen          315.0  ...                 NaN  Feb20
+
+[5 rows x 49 columns]
+
+================================================================================
+3. ESTATÍSTICAS DESCRITIVAS - VARIÁVEIS NUMÉRICAS
+================================================================================
+       serviceCharge  telekomHybridUploadSpeed  ...  electricityBasePrice  electricityKwhPrice
+count  261941.000000                   45020.0  ...          46846.000000         46846.000000     
+mean      151.206113                      10.0  ...             89.113612             0.199769     
+std       308.295790                       0.0  ...              5.395805             0.009667     
+min         0.000000                      10.0  ...             71.430000             0.170500     
+25%        95.000000                      10.0  ...             90.760000             0.191500     
+50%       135.000000                      10.0  ...             90.760000             0.198500     
+75%       190.000000                      10.0  ...             90.760000             0.205500     
+max    146118.000000                      10.0  ...             90.760000             0.227600     
+
+[8 rows x 24 columns]
+
+================================================================================
+4. VALORES AUSENTES (MISSING VALUES)
+================================================================================
+                          Missing_Count  Missing_Percentage
+telekomHybridUploadSpeed         223830               83.25
+electricityBasePrice             222004               82.58
+electricityKwhPrice              222004               82.58
+energyEfficiencyClass            191063               71.07
+lastRefurbish                    188139               69.98
+heatingCosts                     183332               68.19
+noParkSpaces                     175798               65.39
+petsAllowed                      114573               42.62
+interiorQual                     112665               41.91
+thermalChar                      106506               39.62
+numberOfFloors                    97732               36.35
+houseNumber                       71018               26.42
+streetPlain                       71013               26.41
+condition                         68489               25.47
+yearConstructed                   57045               21.22
+yearConstructedRange              57045               21.22
+firingTypes                       56964               21.19
+facilities                        52924               19.69
+floor                             51309               19.08
+heatingType                       44856               16.68
+totalRent                         40517               15.07
+typeOfFlat                        36614               13.62
+telekomUploadSpeed                33358               12.41
+telekomTvOffer                    32619               12.13
+description                       19747                7.34
+serviceCharge                      6909                2.57
+pricetrend                         1832                0.68
+scoutId                               0                0.00
+hasKitchen                            0                0.00
+balcony                               0                0.00
+newlyConst                            0                0.00
+regio1                                0                0.00
+picturecount                          0                0.00
+geo_bln                               0                0.00
+noRooms                               0                0.00
+baseRentRange                         0                0.00
+lift                                  0                0.00
+street                                0                0.00
+cellar                                0                0.00
+geo_krs                               0                0.00
+livingSpace                           0                0.00
+baseRent                              0                0.00
+geo_plz                               0                0.00
+regio3                                0                0.00
+garden                                0                0.00
+noRoomsRange                          0                0.00
+regio2                                0                0.00
+livingSpaceRange                      0                0.00
+date                                  0                0.00
+
+Total de células com valores ausentes: 2539905
+Percentual de dados faltantes no dataset: 19.28%
+
+================================================================================
+5. IDENTIFICAÇÃO DE INCONSISTÊNCIAS
+================================================================================
+
+Registros com livingSpace negativo:
+Total: 0
+
+Registros com baseRent <= 0:
+Total: 89
+
+Registros com totalRent <= 0:
+Total: 236
+
+Registros com serviceCharge negativo:
+Total: 0
+
+================================================================================
+6. VERIFICAÇÃO DAS RESTRIÇÕES DO PROJETO
+================================================================================
+
+Restrição 1 - Linhas: 268850 >= 500? ✓ SIM
+Restrição 2 - Colunas: 49 >= 30? ✓ SIM
+
+✓ Dataset ATENDE às restrições mínimas do projeto (Checkpoint 1).
+
+================================================================================
+7. ANÁLISE DA VARIÁVEL ALVO (baseRent)
+================================================================================
+
+baseRent (filtrando valores > 0):
+   Contagem: 268761
+   Média: €694.36
+   Mediana: €490.00
+   Desvio Padrão: €19539.25
+   Mínimo: €1.00
+   Máximo: €9999999.00
+   Q1 (25%): €338.00
+   Q3 (75%): €799.00
+   IQR: €461.00
+   Assimetria (Skewness): 500.1166
+   Curtose (Kurtosis): 255284.0680
+
+================================================================================
+8. ANÁLISE DA VARIÁVEL SECUNDÁRIA (livingSpace)
+================================================================================
+
+livingSpace (filtrando valores > 0):
+   Contagem: 268775
+   Média: 74.38 m²
+   Mediana: 67.33 m²
+   Desvio Padrão: 254.79 m²
+   Mínimo: 1.00 m²
+   Máximo: 111111.00 m²
+   Q1 (25%): 54.00 m²
+   Q3 (75%): 87.00 m²
+   Assimetria (Skewness): 373.7981
+
+================================================================================
+9. ANÁLISE DE VARIÁVEIS CATEGÓRICAS PRINCIPAIS
+================================================================================
+
+Distribuição por regio1 (Top 10):
+   1. Nordrhein_Westfalen: 62863 (23.4%)
+   2. Sachsen: 58154 (21.6%)
+   3. Bayern: 21609 (8.0%)
+   4. Sachsen_Anhalt: 20124 (7.5%)
+   5. Hessen: 17845 (6.6%)
+   6. Niedersachsen: 16593 (6.2%)
+   7. Baden_Württemberg: 16091 (6.0%)
+   8. Berlin: 10406 (3.9%)
+   9. Thüringen: 8388 (3.1%)
+   10. Rheinland_Pfalz: 8368 (3.1%)
+
+Distribuição de hasKitchen:
+   Com cozinha montada: 92056 (34.2%)
+   Sem cozinha montada: 176794 (65.8%)
+
+Distribuição de typeOfFlat (Top 10):
+   1. apartment: 131522 (48.9%)
+   2. roof_storey: 34787 (12.9%)
+   3. ground_floor: 31538 (11.7%)
+   4. other: 9519 (3.5%)
+   5. maisonette: 9319 (3.5%)
+   6. raised_ground_floor: 5628 (2.1%)
+   7. penthouse: 3568 (1.3%)
+   8. terraced_flat: 3385 (1.3%)
+   9. half_basement: 2013 (0.7%)
+   10. loft: 957 (0.4%)
+
+================================================================================
+10. ANÁLISE DE CORRELAÇÃO - VARIÁVEIS NUMÉRICAS
+================================================================================
+
+Variáveis numéricas disponíveis (24):
+['serviceCharge', 'telekomHybridUploadSpeed', 'picturecount', 'pricetrend', 'telekomUploadSpeed', 'totalRent', 'yearConstructed', 'scoutId', 'noParkSpaces', 'yearConstructedRange', 'baseRent', 'livingSpace', 'baseRentRange', 'geo_plz', 'noRooms', 'thermalChar', 'floor', 'numberOfFloors', 'noRoomsRange', 'livingSpaceRange', 'heatingCosts', 'lastRefurbish', 'electricityBasePrice', 'electricityKwhPrice']
+
+Correlações com baseRent (variável alvo):
+baseRent                1.000000
+yearConstructedRange    0.311064
+serviceCharge           0.236240
+yearConstructed         0.152298
+lastRefurbish           0.148990
+heatingCosts            0.118453
+totalRent               0.101741
+baseRentRange           0.027437
+livingSpaceRange        0.013863
+floor                   0.012608
+Name: baseRent, dtype: float64
+
+================================================================================
+11. DETECÇÃO DE OUTLIERS - MÉTODO IQR
+================================================================================
+
+baseRent:
+   Limite inferior: €-353.50
+   Limite superior: €1490.50
+   Outliers detectados: 14458 (5.4%)
+
+livingSpace:
+   Limite inferior: 4.50 m²
+   Limite superior: 136.50 m²
+   Outliers detectados: 11384 (4.2%)
+
+================================================================================
+12. RESUMO FINAL
+================================================================================
+Total de registros: 268,850
+Total de colunas: 49
+Dados válidos (sem NaN) em baseRent: 268850
+Registros com baseRent > 0: 268761
+Percentual de dados faltantes: 19.28%
