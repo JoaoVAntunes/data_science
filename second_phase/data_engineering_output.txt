@@ -1,0 +1,512 @@
+
+====================================================================================================
+DATA ENGINEERING AND DATA CLEANSING DIAGNOSTIC REPORT
+====================================================================================================
+
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+BLOCO 1 — DIAGNÓSTICO DE MISSING VALUES
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
+                  Column  Missing_Count  Missing_%      Category Recommendation
+telekomHybridUploadSpeed         223830      83.25          >70%           DROP
+    electricityBasePrice         222004      82.58          >70%           DROP
+     electricityKwhPrice         222004      82.58          >70%           DROP
+   energyEfficiencyClass         191063      71.07          >70%           DROP
+           lastRefurbish         188139      69.98        30-70%         REVIEW
+            heatingCosts         183332      68.19        30-70%         REVIEW
+            noParkSpaces         175798      65.39        30-70%         REVIEW
+             petsAllowed         114573      42.62        30-70%         REVIEW
+            interiorQual         112665      41.91        30-70%         REVIEW
+             thermalChar         106506      39.62        30-70%         REVIEW
+          numberOfFloors          97732      36.35        30-70%         REVIEW
+             houseNumber          71018      26.42        10-30%         IMPUTE
+             streetPlain          71013      26.41        10-30%         IMPUTE
+               condition          68489      25.47        10-30%         IMPUTE
+         yearConstructed          57045      21.22        10-30%         IMPUTE
+    yearConstructedRange          57045      21.22        10-30%         IMPUTE
+             firingTypes          56964      21.19        10-30%         IMPUTE
+              facilities          52924      19.69        10-30%         IMPUTE
+                   floor          51309      19.08        10-30%         IMPUTE
+             heatingType          44856      16.68        10-30%         IMPUTE
+               totalRent          40517      15.07        10-30%         IMPUTE
+              typeOfFlat          36614      13.62        10-30%         IMPUTE
+      telekomUploadSpeed          33358      12.41        10-30%         IMPUTE
+          telekomTvOffer          32619      12.13        10-30%         IMPUTE
+             description          19747       7.34          ≤10%           KEEP
+           serviceCharge           6909       2.57          ≤10%           KEEP
+              pricetrend           1832       0.68          ≤10%           KEEP
+                 scoutId              0       0.00 0% (Complete)           KEEP
+              hasKitchen              0       0.00 0% (Complete)           KEEP
+                 balcony              0       0.00 0% (Complete)           KEEP
+              newlyConst              0       0.00 0% (Complete)           KEEP
+                  regio1              0       0.00 0% (Complete)           KEEP
+            picturecount              0       0.00 0% (Complete)           KEEP
+                 geo_bln              0       0.00 0% (Complete)           KEEP
+                 noRooms              0       0.00 0% (Complete)           KEEP
+           baseRentRange              0       0.00 0% (Complete)           KEEP
+                    lift              0       0.00 0% (Complete)           KEEP
+                  street              0       0.00 0% (Complete)           KEEP
+                  cellar              0       0.00 0% (Complete)           KEEP
+                 geo_krs              0       0.00 0% (Complete)           KEEP
+             livingSpace              0       0.00 0% (Complete)           KEEP
+                baseRent              0       0.00 0% (Complete)           KEEP
+                 geo_plz              0       0.00 0% (Complete)           KEEP
+                  regio3              0       0.00 0% (Complete)           KEEP
+                  garden              0       0.00 0% (Complete)           KEEP
+            noRoomsRange              0       0.00 0% (Complete)           KEEP
+                  regio2              0       0.00 0% (Complete)           KEEP
+        livingSpaceRange              0       0.00 0% (Complete)           KEEP
+                    date              0       0.00 0% (Complete)           KEEP
+
+📊 RESUMO POR CATEGORIA:
+  • 0% (Complete): 22 coluna(s)
+  • 10-30%: 13 coluna(s)
+  • 30-70%: 7 coluna(s)
+  • >70%: 4 coluna(s)
+  • ≤10%: 3 coluna(s)
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+BLOCO 2 — DIAGNÓSTICO DE OUTLIERS (IQR METHOD)
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
+                  Column  Outlier_Count  Outlier_%  Lower_Bound  Upper_Bound   Min_Value    Max_Value  Suspicious_Values
+                 scoutId          32771      12.19  96074445.75 124385347.75 28871743.00 115711743.00                266
+                baseRent          14458       5.38      -353.50      1490.50        0.00   9999999.00               1472
+            noParkSpaces          14238       5.30         1.00         1.00        0.00      2241.00                  0
+               totalRent          12186       4.53      -303.00      1757.80        0.00  15751535.00               1400
+             livingSpace          11459       4.26         4.50       136.50        0.00    111111.00                  2
+            picturecount           9332       3.47        -4.50        23.50        0.00       121.00                  0
+           lastRefurbish           9278       3.45      2001.50      2029.50     1015.00      2919.00               1243
+           serviceCharge           8797       3.27       -47.50       332.50        0.00    146118.00                 25
+            noRoomsRange           8061       3.00         0.50         4.50        1.00         5.00                  0
+                 noRooms           8061       3.00         0.50         4.50        1.00       999.99                  0
+              pricetrend           4903       1.82        -1.86         8.43      -12.33        14.92                  0
+             thermalChar           4710       1.75       -12.95       232.25        0.10      1996.00                  1
+          numberOfFloors           4580       1.70        -1.00         7.00        0.00       999.00                  0
+    electricityBasePrice           3990       1.48        90.76        90.76       71.43        90.76                  0
+            heatingCosts           3567       1.33         0.00       144.00        0.00     12613.00                  3
+                   floor           3241       1.21        -2.00         6.00       -1.00       999.00                  0
+         yearConstructed           3212       1.19      1881.00      2065.00     1000.00      2090.00               1455
+     electricityKwhPrice           1844       0.69         0.17         0.23        0.17         0.23                  0
+      telekomUploadSpeed            141       0.05       -35.00        85.00        1.00       100.00                  0
+telekomHybridUploadSpeed              0       0.00        10.00        10.00       10.00        10.00                  0
+           baseRentRange              0       0.00        -2.50         9.50        1.00         9.00                  0
+                 geo_plz              0       0.00    -62788.00    128988.00      852.00     99998.00                  0
+    yearConstructedRange              0       0.00        -5.00        11.00        1.00         9.00                  0
+        livingSpaceRange              0       0.00        -1.00         7.00        1.00         7.00                  0
+
+📊 RANKING DE VARIÁVEIS COM MAIS OUTLIERS:
+  scoutId                   | Outliers:  32771 ( 12.19%) | Suspicious: 266
+  baseRent                  | Outliers:  14458 (  5.38%) | Suspicious: 1472
+  noParkSpaces              | Outliers:  14238 (  5.30%) | Suspicious: 0
+  totalRent                 | Outliers:  12186 (  4.53%) | Suspicious: 1400
+  livingSpace               | Outliers:  11459 (  4.26%) | Suspicious: 2
+
+⚠️  POSSÍVEIS ERROS DE PREENCHIMENTO (valores redondos):
+  • scoutId: 266 valores redondos múltiplos de 1000
+  • baseRent: 1472 valores redondos múltiplos de 1000
+  • totalRent: 1400 valores redondos múltiplos de 1000
+  • livingSpace: 2 valores redondos múltiplos de 1000
+  • lastRefurbish: 1243 valores redondos múltiplos de 1000
+  • serviceCharge: 25 valores redondos múltiplos de 1000
+  • thermalChar: 1 valores redondos múltiplos de 1000
+  • heatingCosts: 3 valores redondos múltiplos de 1000
+  • yearConstructed: 1455 valores redondos múltiplos de 1000
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+BLOCO 3 — DIAGNÓSTICO DE SKEWNESS E TRANSFORMAÇÕES RECOMENDADAS
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
+                  Column  Skewness            Classification Recommendation
+                baseRent  500.1992    Fortemente Assimétrica    YEO-JOHNSON
+               totalRent  466.5645    Fortemente Assimétrica    YEO-JOHNSON
+           serviceCharge  409.1620    Fortemente Assimétrica    YEO-JOHNSON
+             livingSpace  373.8372    Fortemente Assimétrica    YEO-JOHNSON
+                 noRooms  249.5349    Fortemente Assimétrica        BOX-COX
+            noParkSpaces  210.5934    Fortemente Assimétrica    YEO-JOHNSON
+                   floor  155.4370    Fortemente Assimétrica    YEO-JOHNSON
+          numberOfFloors  114.0914    Fortemente Assimétrica    YEO-JOHNSON
+            heatingCosts   63.8862    Fortemente Assimétrica    YEO-JOHNSON
+           lastRefurbish   24.6239    Fortemente Assimétrica        BOX-COX
+             thermalChar    6.7931    Fortemente Assimétrica        BOX-COX
+         yearConstructed   -4.5647    Fortemente Assimétrica        BOX-COX
+    electricityBasePrice   -2.9722    Fortemente Assimétrica        BOX-COX
+                 scoutId   -2.7734    Fortemente Assimétrica        BOX-COX
+            picturecount    1.8087    Fortemente Assimétrica    YEO-JOHNSON
+    yearConstructedRange    0.8582 Moderadamente Assimétrica          LOG1P
+        livingSpaceRange    0.7769 Moderadamente Assimétrica          LOG1P
+      telekomUploadSpeed   -0.7345 Moderadamente Assimétrica          LOG1P
+     electricityKwhPrice    0.4651    Aproximadamente Normal           NONE
+           baseRentRange    0.4472    Aproximadamente Normal           NONE
+                 geo_plz    0.4306    Aproximadamente Normal           NONE
+              pricetrend    0.3836    Aproximadamente Normal           NONE
+            noRoomsRange    0.3195    Aproximadamente Normal           NONE
+telekomHybridUploadSpeed       NaN    Fortemente Assimétrica        BOX-COX
+
+📊 RESUMO DE TRANSFORMAÇÕES RECOMENDADAS:
+  • YEO-JOHNSON :  9 variável(is)
+  • BOX-COX     :  7 variável(is)
+  • NONE        :  5 variável(is)
+  • LOG1P       :  3 variável(is)
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+BLOCO 4 — DIAGNÓSTICO DE VARIÁVEIS CATEGÓRICAS
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
+               Column  Unique_Values   Cardinality  Dominant_Category_%  Missing_% Encoding_Recommendation
+          description         212621    Alta (>30)                 0.08       7.34         Target Encoding
+           facilities         189526    Alta (>30)                 0.08      19.69         Target Encoding
+          streetPlain          54490    Alta (>30)                 0.34      26.41         Target Encoding
+               street          52373    Alta (>30)                26.41       0.00         Target Encoding
+               regio3           8684    Alta (>30)                 1.77       0.00         Target Encoding
+          houseNumber           5510    Alta (>30)                 2.67      26.42         Target Encoding
+              geo_krs            419    Alta (>30)                 5.10       0.00         Target Encoding
+               regio2            419    Alta (>30)                 5.10       0.00         Target Encoding
+          firingTypes            132    Alta (>30)                41.25      21.19         Target Encoding
+               regio1             16 Média (11-30)                23.38       0.00        Ordinal Encoding
+              geo_bln             16 Média (11-30)                23.38       0.00        Ordinal Encoding
+          heatingType             13 Média (11-30)                47.97      16.68        Ordinal Encoding
+energyEfficiencyClass             10   Baixa (≤10)                 5.44      71.07        One-Hot Encoding
+            condition             10   Baixa (≤10)                24.77      25.47        One-Hot Encoding
+           typeOfFlat             10   Baixa (≤10)                48.92      13.62        One-Hot Encoding
+                 date              4   Baixa (≤10)                29.49       0.00        One-Hot Encoding
+         interiorQual              4   Baixa (≤10)                30.44      41.91        One-Hot Encoding
+       telekomTvOffer              3   Baixa (≤10)                84.67      12.13        One-Hot Encoding
+          petsAllowed              3   Baixa (≤10)                34.21      42.62        One-Hot Encoding
+
+📊 DISTRIBUIÇÃO DAS CATEGORIAS MAIS FREQUENTES:
+
+  regio1:
+    • Nordrhein_Westfalen :  62863 ( 23.38%)
+    • Sachsen             :  58154 ( 21.63%)
+    • Bayern              :  21609 (  8.04%)
+
+  heatingType:
+    • central_heating     : 128977 ( 47.97%)
+    • district_heating    :  24808 (  9.23%)
+    • gas_heating         :  19955 (  7.42%)
+
+  telekomTvOffer:
+    • ONE_YEAR_FREE       : 227632 ( 84.67%)
+    • NONE                :   4957 (  1.84%)
+    • ON_DEMAND           :   3642 (  1.35%)
+
+  firingTypes:
+    • gas                 : 110899 ( 41.25%)
+    • district_heating    :  49389 ( 18.37%)
+    • oil                 :  18137 (  6.75%)
+
+  geo_bln:
+    • Nordrhein_Westfalen :  62863 ( 23.38%)
+    • Sachsen             :  58154 ( 21.63%)
+    • Bayern              :  21609 (  8.04%)
+
+  houseNumber:
+    • 1                   :   7173 (  2.67%)
+    • 2                   :   6788 (  2.52%)
+    • 4                   :   5823 (  2.17%)
+
+  geo_krs:
+    • Leipzig             :  13723 (  5.10%)
+    • Chemnitz            :  12575 (  4.68%)
+    • Berlin              :  10406 (  3.87%)
+
+  condition:
+    • well_kept           :  66591 ( 24.77%)
+    • refurbished         :  26964 ( 10.03%)
+    • fully_renovated     :  26368 (  9.81%)
+
+  interiorQual:
+    • normal              :  81826 ( 30.44%)
+    • sophisticated       :  64762 ( 24.09%)
+    • luxury              :   7648 (  2.84%)
+
+  petsAllowed:
+    • negotiable          :  91970 ( 34.21%)
+    • no                  :  51991 ( 19.34%)
+    • yes                 :  10316 (  3.84%)
+
+  street:
+    • no_information      :  71013 ( 26.41%)
+    • Hauptstra&szlig;e   :    936 (  0.35%)
+    • Bahnhofstra&szlig;e :    853 (  0.32%)
+
+  streetPlain:
+    • Hauptstraße         :    911 (  0.34%)
+    • Bahnhofstraße       :    834 (  0.31%)
+    • Leipziger_Straße    :    428 (  0.16%)
+
+  typeOfFlat:
+    • apartment           : 131522 ( 48.92%)
+    • roof_storey         :  34787 ( 12.94%)
+    • ground_floor        :  31538 ( 11.73%)
+
+  regio2:
+    • Leipzig             :  13723 (  5.10%)
+    • Chemnitz            :  12575 (  4.68%)
+    • Berlin              :  10406 (  3.87%)
+
+  regio3:
+    • Innenstadt          :   4751 (  1.77%)
+    • Stadtmitte          :   2697 (  1.00%)
+    • Altstadt            :   2334 (  0.87%)
+
+  description:
+    • + MEIN GUENTZ - Quartier der Generationen
+
++ bis 2020 fertiggestellter Neubau in Johannstadt-Nord
+
++ Wohnen und Nahversorger in einem Areal
+
+  (REWE-Supermarkt, Drogerie ROSSMANN, Bäckerei Schwerdtner, TUI-Reisecenter)
+
++ Kleinst- bis Familienwohnungen mit optimalen Grundrissen
+
++ Innenbereich mit begrünten Erholungsflächen und einem Spielplatz sowie Ruhezonen zum Verweilen:    216 (  0.08%)
+    • saniertes Mehrfamilienhaus:    201 (  0.07%)
+    • Das Objekt ist ein hochwertig saniertes und denkmalgeschütztes Mehrfamilienhaus.
+
+:    199 (  0.07%)
+
+  facilities:
+    • Laminat             :    207 (  0.08%)
+    • Diese Wohnung wird komplett renoviert und nach Bedarf mit neuen Fußbodenbelägen, Innentüren etc. ausgestattet. Das Bad ist gefliest und wird mit Badewanne bzw. Dusche ausgestattet. 
+Diese Wohnung verfügt über eine moderne Ausstattung. Hierzu gehören die Gegensprechanlage, Kabel-, Internet- und Telefonanschluss ebenso, wie der Waschmaschinen- und Geschirrspüleranschluss.
+Individuelle Ausstattungswünsche werden gern nach Möglichkeit und in Absprache mit unseren Mitarbeitern berücksichtigt. Die Wohnung wird vor Übergabe komplett gereinigt und ist sofort bezugsfertig.
+Abstellmöglichkeiten bietet der mietereigene Keller. Darüber hinaus steht unseren Mietern ein Wäschetrockenplatz zur Verfügung.
+Kostenlose öffentliche Parkplätze sind in unmittelbarer Umgebung vorhanden.:    183 (  0.07%)
+    • Laminatboden        :    107 (  0.04%)
+
+  energyEfficiencyClass:
+    • C                   :  14613 (  5.44%)
+    • NO_INFORMATION      :  14130 (  5.26%)
+    • D                   :  13925 (  5.18%)
+
+  date:
+    • Feb20               :  79276 ( 29.49%)
+    • May19               :  76047 ( 28.29%)
+    • Oct19               :  66685 ( 24.80%)
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+BLOCO 5 — DIAGNÓSTICO DE ESCALONAMENTO (SCALING)
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
+                  Column         Min          Max         Mean         Std   Amplitude  Outliers                       Scaler_Recommendation
+           serviceCharge        0.00    146118.00       151.21      308.30   146118.00      8797 RobustScaler (Recomendado: muitos outliers)
+telekomHybridUploadSpeed       10.00        10.00        10.00        0.00        0.00         0                StandardScaler (Recomendado)
+            picturecount        0.00       121.00         9.79        6.41      121.00      9332 RobustScaler (Recomendado: muitos outliers)
+              pricetrend      -12.33        14.92         3.39        1.96       27.25      4903 RobustScaler (Recomendado: muitos outliers)
+      telekomUploadSpeed        1.00       100.00        28.80       16.34       99.00       141 RobustScaler (Recomendado: muitos outliers)
+               totalRent        0.00  15751535.00       901.33    33238.33 15751535.00     12186 RobustScaler (Recomendado: muitos outliers)
+         yearConstructed     1000.00      2090.00      1966.40       46.99     1090.00      3212 RobustScaler (Recomendado: muitos outliers)
+                 scoutId 28871743.00 115711743.00 106969670.36 12500933.41 86840000.00     32771 RobustScaler (Recomendado: muitos outliers)
+            noParkSpaces        0.00      2241.00         1.33        8.36     2241.00     14238 RobustScaler (Recomendado: muitos outliers)
+    yearConstructedRange        1.00         9.00         3.71        2.74        8.00         0                StandardScaler (Recomendado)
+                baseRent        0.00   9999999.00       694.13    19536.02  9999999.00     14458 RobustScaler (Recomendado: muitos outliers)
+             livingSpace        0.00    111111.00        74.36      254.76   111111.00     11459 RobustScaler (Recomendado: muitos outliers)
+           baseRentRange        1.00         9.00         3.77        2.21        8.00         0                StandardScaler (Recomendado)
+                 geo_plz      852.00     99998.00     37283.02    27798.04    99146.00         0                StandardScaler (Recomendado)
+                 noRooms        1.00       999.99         2.64        2.63      998.99      8061 RobustScaler (Recomendado: muitos outliers)
+             thermalChar        0.10      1996.00       114.75       61.65     1995.90      4710 RobustScaler (Recomendado: muitos outliers)
+                   floor       -1.00       999.00         2.12        3.63     1000.00      3241 RobustScaler (Recomendado: muitos outliers)
+          numberOfFloors        0.00       999.00         3.57        6.38      999.00      4580 RobustScaler (Recomendado: muitos outliers)
+            noRoomsRange        1.00         5.00         2.57        0.94        4.00      8061                StandardScaler (Recomendado)
+        livingSpaceRange        1.00         7.00         3.07        1.41        6.00         0                StandardScaler (Recomendado)
+            heatingCosts        0.00     12613.00        76.99      147.72    12613.00      3567 RobustScaler (Recomendado: muitos outliers)
+           lastRefurbish     1015.00      2919.00      2013.90       10.96     1904.00      9278 RobustScaler (Recomendado: muitos outliers)
+    electricityBasePrice       71.43        90.76        89.11        5.40       19.33      3990                StandardScaler (Recomendado)
+     electricityKwhPrice        0.17         0.23         0.20        0.01        0.06      1844               RobustScaler (Amplitude alta)
+
+📊 RESUMO DE RECOMENDAÇÕES DE SCALING:
+  • 16 variável(is): RobustScaler (Recomendado: muitos outliers)
+  • 7 variável(is): StandardScaler (Recomendado)
+  • 1 variável(is): RobustScaler (Amplitude alta)
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+BLOCO 6 — ANÁLISE DE DISTRIBUIÇÃO DA VARIÁVEL ALVO (baseRent)
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
+📌 INFORMAÇÕES SOBRE O PROBLEMA:
+  • Tipo de Problema: REGRESSÃO (previsão contínua)
+  • Variável Alvo: baseRent
+  • Número de Amostras: 268850
+  • Valores Únicos: 26659
+  • Range: [0.00, 9999999.00]
+  • Média: 694.13
+  • Mediana: 490.00
+  • Desvio Padrão: 19536.02
+
+📝 POR QUE SMOTE E BALANCEAMENTO NÃO SÃO NECESSÁRIOS:
+  ✓ SMOTE (Synthetic Minority Over-sampling Technique) é para CLASSIFICAÇÃO
+    → Balanceia classes discretas (ex: 0 e 1, ou Low/Medium/High)
+    → Em REGRESSÃO, a variável alvo é CONTÍNUA, não há "classes"
+
+  ✓ Balanceamento de classes é conceito de CLASSIFICAÇÃO
+    → Em REGRESSÃO, trabalha-se com distribuições contínuas de valores
+    → Cada amostra tem um valor único contínuo
+
+  ✓ Para REGRESSÃO, o foco é em:
+    → Normalização/escalonamento dos dados
+    → Tratamento de outliers (que afetam modelos sensíveis)
+    → Transformações para melhorar distribuição (ex: log, Box-Cox)
+    → Feature engineering e seleção de features relevantes
+
+📊 DISTRIBUIÇÃO DA VARIÁVEL ALVO (DECIS - 10 FAIXAS):
+
+  Decil    | Count | Percentual | Visualização
+  --------------------------------------------------
+  D 1     | 27491 |    10.23% | █████
+  D 2     | 26279 |     9.77% | ████
+  D 3     | 28133 |    10.46% | █████
+  D 4     | 25682 |     9.55% | ████
+  D 5     | 27193 |    10.11% | █████
+  D 6     | 26837 |     9.98% | ████
+  D 7     | 27548 |    10.25% | █████
+  D 8     | 25938 |     9.65% | ████
+  D 9     | 27199 |    10.12% | █████
+  D10     | 26550 |     9.88% | ████
+
+  Conclusão: Distribuição verificada apenas para exploração.
+  Nenhuma ação de rebalanceamento é necessária em regressão.
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+BLOCO 7 — RESUMO EXECUTIVO E PIPELINE DE PRÉ-PROCESSAMENTO
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
+📋 RECOMENDAÇÕES CONSOLIDADAS:
+
+1️⃣  COLUNAS A REMOVER (>70% missing ou alta cardinalidade):
+    ✗ telekomHybridUploadSpeed
+    ✗ electricityBasePrice
+    ✗ electricityKwhPrice
+    ✗ energyEfficiencyClass
+
+2️⃣  COLUNAS A IMPUTAR (10-30% missing):
+    → houseNumber               (26.42% missing) - Usar: MODA ou criar categoria 'Unknown'
+    → streetPlain               (26.41% missing) - Usar: MODA ou criar categoria 'Unknown'
+    → condition                 (25.47% missing) - Usar: MODA ou criar categoria 'Unknown'
+    → yearConstructed           (21.22% missing) - Usar: MÉDIA ou MEDIANA
+    → yearConstructedRange      (21.22% missing) - Usar: MÉDIA ou MEDIANA
+    → firingTypes               (21.19% missing) - Usar: MODA ou criar categoria 'Unknown'
+    → facilities                (19.69% missing) - Usar: MODA ou criar categoria 'Unknown'
+    → floor                     (19.08% missing) - Usar: MÉDIA ou MEDIANA
+    → heatingType               (16.68% missing) - Usar: MODA ou criar categoria 'Unknown'
+    → totalRent                 (15.07% missing) - Usar: MÉDIA ou MEDIANA
+    → typeOfFlat                (13.62% missing) - Usar: MODA ou criar categoria 'Unknown'
+    → telekomUploadSpeed        (12.41% missing) - Usar: MÉDIA ou MEDIANA
+    → telekomTvOffer            (12.13% missing) - Usar: MODA ou criar categoria 'Unknown'
+
+3️⃣  VARIÁVEIS COM TRANSFORMAÇÃO RECOMENDADA:
+    → noRooms                   (skewness: 249.5349) - Transformação: BOX-COX
+    → lastRefurbish             (skewness: 24.6239) - Transformação: BOX-COX
+    → thermalChar               (skewness:  6.7931) - Transformação: BOX-COX
+    → yearConstructed           (skewness: -4.5647) - Transformação: BOX-COX
+    → electricityBasePrice      (skewness: -2.9722) - Transformação: BOX-COX
+    → scoutId                   (skewness: -2.7734) - Transformação: BOX-COX
+    → yearConstructedRange      (skewness:  0.8582) - Transformação: LOG1P
+    → livingSpaceRange          (skewness:  0.7769) - Transformação: LOG1P
+    → telekomUploadSpeed        (skewness: -0.7345) - Transformação: LOG1P
+    → telekomHybridUploadSpeed  (skewness:     nan) - Transformação: BOX-COX
+
+4️⃣  VARIÁVEIS COM MUITOS OUTLIERS (>5%):
+    → scoutId                   ( 32771 outliers,  12.19%)
+       Ação: Investigar ou usar RobustScaler
+    → baseRent                  ( 14458 outliers,   5.38%)
+       Ação: Investigar ou usar RobustScaler
+    → noParkSpaces              ( 14238 outliers,   5.30%)
+       Ação: Investigar ou usar RobustScaler
+
+5️⃣  ENCODING RECOMENDADO PARA VARIÁVEIS CATEGÓRICAS:
+    → description               (212621 categorias) - Target Encoding
+    → facilities                (189526 categorias) - Target Encoding
+    → streetPlain               (54490 categorias) - Target Encoding
+    → street                    (52373 categorias) - Target Encoding
+    → regio3                    (8684 categorias) - Target Encoding
+    → houseNumber               (5510 categorias) - Target Encoding
+    → geo_krs                   (419 categorias) - Target Encoding
+    → regio2                    (419 categorias) - Target Encoding
+    → firingTypes               (132 categorias) - Target Encoding
+    → regio1                    ( 16 categorias) - Ordinal Encoding
+    → geo_bln                   ( 16 categorias) - Ordinal Encoding
+    → heatingType               ( 13 categorias) - Ordinal Encoding
+    → energyEfficiencyClass     ( 10 categorias) - One-Hot Encoding
+    → condition                 ( 10 categorias) - One-Hot Encoding
+    → typeOfFlat                ( 10 categorias) - One-Hot Encoding
+    → date                      (  4 categorias) - One-Hot Encoding
+    → interiorQual              (  4 categorias) - One-Hot Encoding
+    → telekomTvOffer            (  3 categorias) - One-Hot Encoding
+    → petsAllowed               (  3 categorias) - One-Hot Encoding
+
+6️⃣  SCALER RECOMENDADO PARA VARIÁVEIS NUMÉRICAS:
+    • RobustScaler: 17 variável(is) com outliers significativos
+    • StandardScaler: 7 variável(is) com distribuição mais normal
+
+7️⃣  PIPELINE DE PRÉ-PROCESSAMENTO SUGERIDO:
+
+    ┌─────────────────────────────────────────────────────┐
+    │ ETAPA 1: REMOÇÃO                                     │
+    │  • Remover colunas com >70% missing                 │
+    │  • Remover colunas com alta cardinalidade (>30)     │
+    │  • Remover duplicatas                               │
+    └─────────────────────────────────────────────────────┘
+                              ↓
+    ┌─────────────────────────────────────────────────────┐
+    │ ETAPA 2: IMPUTAÇÃO                                   │
+    │  • Imputar numéricas com MEDIANA (robusta)          │
+    │  • Imputar categóricas com MODA ou 'Unknown'        │
+    └─────────────────────────────────────────────────────┘
+                              ↓
+    ┌─────────────────────────────────────────────────────┐
+    │ ETAPA 3: TRATAMENTO DE OUTLIERS                      │
+    │  • Manter outliers legítimos                         │
+    │  • Investigar valores suspeitos (999, 9999999)      │
+    │  • Usar RobustScaler para variáveis com outliers    │
+    └─────────────────────────────────────────────────────┘
+                              ↓
+    ┌─────────────────────────────────────────────────────┐
+    │ ETAPA 4: TRANSFORMAÇÕES                              │
+    │  • Aplicar LOG1P, Box-Cox ou Yeo-Johnson            │
+    │  • Validar distribuição após transformação          │
+    └─────────────────────────────────────────────────────┘
+                              ↓
+    ┌─────────────────────────────────────────────────────┐
+    │ ETAPA 5: ENCODING CATEGÓRICAS                        │
+    │  • One-Hot Encoding para baixa cardinalidade        │
+    │  • Target Encoding para alta cardinalidade          │
+    │  • Ordinal Encoding onde apropriado                 │
+    └─────────────────────────────────────────────────────┘
+                              ↓
+    ┌─────────────────────────────────────────────────────┐
+    │ ETAPA 6: ESCALONAMENTO                               │
+    │  • StandardScaler (para variáveis normais)          │
+    │  • RobustScaler (para variáveis com outliers)       │
+    │  • Fit em TREINO, apply em TESTE                    │
+    └─────────────────────────────────────────────────────┘
+                              ↓
+    ┌─────────────────────────────────────────────────────┐
+    │ ETAPA 7: VALIDAÇÃO                                   │
+    │  • Verificar distribuições                          │
+    │  • Testar correlações com variável alvo             │
+    │  • Pronto para Machine Learning!                    │
+    └─────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+FIM DO RELATÓRIO DE DATA ENGINEERING AND DATA CLEANSING
+====================================================================================================
+
+✅ Análise concluída. Próximas etapas:
+  1. Revisar as recomendações acima
+  2. Implementar limpeza conforme recomendações
+  3. Criar pipeline de preprocessamento com sklearn.pipeline
+  4. Validar performance em dados de treino vs teste
+  5. Prosseguir com Feature Engineering e Model Selection
+

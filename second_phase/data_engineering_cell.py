@@ -10,6 +10,23 @@ from scipy import stats
 from scipy.stats import skew, boxcox, yeojohnson
 import warnings
 warnings.filterwarnings('ignore')
+import sys
+import builtins
+
+# Salvar referência original de print
+original_print = builtins.print
+
+# Abrir arquivo para salvar saída
+output_file = open(r"C:\Users\joaov\Workspace\4 ano\Data Science\data_science\second_phase\data_engineering_output.txt", "w", encoding="utf-8")
+
+# Função para imprimir em ambos console e arquivo
+def print_output(*args, **kwargs):
+    original_print(*args, **kwargs)
+    original_print(*args, file=output_file, **kwargs)
+    output_file.flush()
+
+# Substituir print global
+builtins.print = print_output
 
 df = pd.read_csv(r"C:\Users\joaov\Workspace\4 ano\Data Science\data_science\Dataset\immo_data.csv")
 
@@ -506,3 +523,7 @@ print("  2. Implementar limpeza conforme recomendações")
 print("  3. Criar pipeline de preprocessamento com sklearn.pipeline")
 print("  4. Validar performance em dados de treino vs teste")
 print("  5. Prosseguir com Feature Engineering e Model Selection\n")
+
+# Fechar arquivo de saída
+output_file.close()
+print("\n✅ Saída salva em: data_engineering_output.txt", file=sys.stderr)
