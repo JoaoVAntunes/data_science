@@ -1,15 +1,5 @@
 model,target_mode,error_type,error_message
-LinearRegression,raw,ValueError,array must not contain infs or NaNs
-Ridge,raw,ValueError,array must not contain infs or NaNs
-Lasso,raw,ValueError,Coordinate descent iterations resulted in non-finite parameter values. The input data may contain large values and need to be preprocessed.
-ElasticNet,raw,ValueError,Coordinate descent iterations resulted in non-finite parameter values. The input data may contain large values and need to be preprocessed.
-RandomForest,raw,ValueError,Input X contains infinity or a value too large for dtype('float32').
-ExtraTrees,raw,ValueError,Input X contains infinity or a value too large for dtype('float32').
-GradientBoosting,raw,ValueError,Input X contains infinity or a value too large for dtype('float32').
-LinearRegression,log1p,ValueError,array must not contain infs or NaNs
-Ridge,log1p,ValueError,array must not contain infs or NaNs
-Lasso,log1p,ValueError,Coordinate descent iterations resulted in non-finite parameter values. The input data may contain large values and need to be preprocessed.
-ElasticNet,log1p,ValueError,Coordinate descent iterations resulted in non-finite parameter values. The input data may contain large values and need to be preprocessed.
-RandomForest,log1p,ValueError,Input X contains infinity or a value too large for dtype('float32').
-ExtraTrees,log1p,ValueError,Input X contains infinity or a value too large for dtype('float32').
-GradientBoosting,log1p,ValueError,Input X contains infinity or a value too large for dtype('float32').
+RandomForest,raw,MemoryError,could not allocate 1048576 bytes
+ExtraTrees,raw,MemoryError,could not allocate 16777216 bytes
+RandomForest,log1p,MemoryError,could not allocate 16777216 bytes
+ExtraTrees,log1p,MemoryError,could not allocate 33554432 bytes
